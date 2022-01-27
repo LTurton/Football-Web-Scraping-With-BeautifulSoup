@@ -6,4 +6,5 @@ The user is askled to input a date in the format (YYYY-MM-DD), as this is what i
 ```Enter the date that you would like to see fixtures from in the format (YYYY-MM-DD): 2022-01-27```
 
 This will then display the fixtures for that chosen date:
-<img width="442" alt="results1" src="https://user-images.githubusercontent.com/53832520/151462403-6f8307ad-b7cc-42de-9212-04a48642265c.png">
+
+<img width="300" alt="results1" src="https://user-images.githubusercontent.com/53832520/151462403-6f8307ad-b7cc-42de-9212-04a48642265c.png">
