@@ -8,3 +8,9 @@ The user is askled to input a date in the format (YYYY-MM-DD), as this is what i
 This will then display the fixtures for that chosen date:
 
 <img width="300" alt="results1" src="https://user-images.githubusercontent.com/53832520/151462403-6f8307ad-b7cc-42de-9212-04a48642265c.png">
+
+Requesting for a date in the future:
+
+```Enter the date that you would like to see fixtures from in the format (YYYY-MM-DD): 2022-02-02```
+
+<img width="300" alt="results2" src="https://user-images.githubusercontent.com/53832520/151462760-d7cdec04-c881-48fa-9b07-0051409368ee.png">
