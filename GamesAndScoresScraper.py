@@ -37,31 +37,29 @@ class GamesAndScoresScraper:
     # Helper Function - Cleaning (Remove Data From Leagues I Want To Ignore):
     @staticmethod
     def remove_unwanted_leagues(data, leagues_of_interest = LeaguesHandler.interesting_leagues()):
-
         cleaned_data = []
-        skip = False  # Flag to skip elements between "not useful" and "useful"
+        skip = True  # Flag to skip elements initially
 
         for element in data:
-            if element in LeaguesHandler.all_leagues():
-                if element not in leagues_of_interest:
-                    # Found a "not useful" element, set the skip flag
-                    skip = True
-                else:
-                    # Found a "useful" element, reset the skip flag
-                    skip = False
-                    cleaned_data.append(element)
+            if element in leagues_of_interest:
+                # Found a "useful" element, reset the skip flag
+                skip = False
+                cleaned_data.append(element)
             elif not skip:
                 # If not skipping, add the element to cleaned_data
                 cleaned_data.append(element)
 
+        if not cleaned_data:
+            print("No Data found for the requested league, check your inputs.")
+            
         return cleaned_data
     
     @staticmethod
     def clean_data(data, leagues_of_interest = LeaguesHandler.interesting_leagues()):
         #Based on work by: https://github.com/stevoslates/Football-Web-Scraping-With-BeautifulSoup
         
-        #Check we understand the requested league before doing anymore work:
-        leagues_of_interest = LeaguesHandler.check_input_league_is_understood(leagues_of_interest)
+        #Check we understand the requested league before doing any work:
+        checked_leagues_of_interest = LeaguesHandler.filter_input_leagues(leagues_of_interest)         
         
         #the data goes Home - Time - Away - ' '. As it expects a time but this is instead blank for games that haven't kicked off yet.
         #so below i switch the blank with the time and delete he original time. Also this makes it easier when printing out the data.    
@@ -78,7 +76,7 @@ class GamesAndScoresScraper:
         data = ['TBC' if word == 'TBCTo be Confirmed' else word for word in data]
         
         #Customisation - Filter to requested leagues:
-        cleaned_data = GamesAndScoresScraper.remove_unwanted_leagues(data, leagues_of_interest)
+        cleaned_data = GamesAndScoresScraper.remove_unwanted_leagues(data, checked_leagues_of_interest)
         
         return cleaned_data
     
