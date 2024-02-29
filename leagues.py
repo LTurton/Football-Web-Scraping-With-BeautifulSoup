@@ -51,6 +51,7 @@ class LeaguesHandler:
             'Spanish La Liga',
             'Swedish Allsvenskan',
             'Swiss Super League',
+            "The FA Cup",
             "The FA Women's Championship",
             "The FA Women's Super League",
             'Turkish Super Lig',
@@ -79,21 +80,37 @@ class LeaguesHandler:
         
     @staticmethod
     def common_abbreviations():
-        return {"Prem" : "Premier League",
-                "PL" : "Premier League",
-                "FA Cup" : "FA Cup Qualifying",
-                "CL" : "Champions League",
-                "UCL" : "Champions League",
-                "Carabao Cup" : "EFL Cup",
-                "League Cup" : "EFL Cup"}
-        
-        
+        return {"prem" : "Premier League",
+                "pl" : "Premier League",
+                "fa cup" : "The FA Cup",                
+                "cl" : "Champions League",
+                "ucl" : "Champions League",
+                "carabao cup" : "EFL Cup",
+                "league cup" : "EFL Cup"}
+     
+    @staticmethod    
+    def find_closest_match(user_string):
+        # Fuzzy matching (i.e account for typos, errant spaces etc)
+        max_similarity = 0
+        closest_match = None
+
+        for league in LeaguesHandler.all_leagues():
+            similarity = fuzz.ratio(user_string.lower(), league.lower())
+            if similarity > max_similarity:
+                max_similarity = similarity
+                closest_match = league
+
+        if max_similarity >= 80:  # Example threshold
+            return closest_match
+        else:
+            return None
+
     @staticmethod
-    def check_input_league_is_understood(user_string):
+    def _is_league_known(user_string):
 
         #Check if User Has Used A Common Known Abbreviation:
         if user_string in LeaguesHandler.common_abbreviations():
-            return LeaguesHandler.common_abbreviations()[user_string]
+            return LeaguesHandler.common_abbreviations()[user_string.lower()]
         
         #Do We Have An Exact Match:                
         if user_string in LeaguesHandler.all_leagues():
@@ -103,20 +120,42 @@ class LeaguesHandler:
         for league in LeaguesHandler.all_leagues():
             if re.search(fr"\b{user_string}\b", league, flags=re.IGNORECASE | re.MULTILINE):
                 return league
-                
-        # Fuzzy matching (i.e account for typos, errant spaces etc)
-        for league in LeaguesHandler.all_leagues():
-            similarity = fuzz.ratio(user_string.lower(), league.lower())
-            if similarity >= 80:  # Example threshold
-                return league
+          
+        #Fuzzy Logic Near      
+        best_match = LeaguesHandler.find_closest_match(user_string)
+        if best_match is not None:
+            return best_match
             
         # If no match found, raise an error
         raise ValueError(f"'{user_string}' is not a known league.")
             
     @staticmethod
     def custom_league_choice():
-        user_string = input("What league would you like to see? ")
-        
-        user_string = LeaguesHandler.check_input_league_is_understood(user_string)
-
+        user_string = input("What league would you like to see? ")        
+        user_string = LeaguesHandler._is_league_known(user_string)
         return user_string
+    
+    @staticmethod
+    def filter_input_leagues(leagues_of_interest):
+        #Filters Leagues Provided By A User:
+                
+        # Assuming 'leagues_of_interest' is either a list or a single value
+        checked_leagues_of_interest = []
+        if isinstance(leagues_of_interest, list):
+            for league in leagues_of_interest:
+                try:
+                    checked_league = LeaguesHandler._is_league_known(league)
+                    checked_leagues_of_interest.append(checked_league)
+                except ValueError as ve:
+                    print(f"{ve}")
+        else:
+            try:
+                checked_league = LeaguesHandler._is_league_known(leagues_of_interest)
+                checked_leagues_of_interest.append(checked_league)
+            except ValueError as ve:
+                print(f"{ve}")
+
+        if not checked_leagues_of_interest:            
+            raise ValueError("We couldn't interpret the requested league(s).")
+
+        return checked_leagues_of_interest
