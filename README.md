@@ -27,6 +27,7 @@ Requesting for a date in the future:
 * pip install requests
 * pip install BeautifulSoup
 * pip install fuzzywuzzy
+* pip install python-Levenshtein (option speedup package)
 
 # Overall Aim
 
