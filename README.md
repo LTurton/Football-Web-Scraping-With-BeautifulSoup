@@ -1,4 +1,4 @@
-# Football Web Scraping With BeautifulSoup
+# Football Web Scraping With BeautifulSoup - Original
 Here I use BeautifulSoup to scrape data of football fixtures from the BBC sport website, from the specified date which is inputted by the user. Returning the result in a neat format in python. Web Scraping carried out using pythons libraries BeautifulSoup and Requests.
 
 The user is asked to input a date in the format (YYYY-MM-DD), as this is what is on the end of the URL for the fixtures for that day from the BBC Sport Website.
@@ -14,3 +14,21 @@ Requesting for a date in the future:
 ```Enter the date that you would like to see fixtures from in the format (YYYY-MM-DD): 2022-02-02```
 
 <img width="400" alt="results2" src="https://user-images.githubusercontent.com/53832520/151462760-d7cdec04-c881-48fa-9b07-0051409368ee.png">
+
+# Changes:
+
+* Split capabilities into relevant classes.
+* Added a capability for the user to specify a specific league they're interested in - including using abbreviations e.g Prem for Premier League, and fuzzy matching to account for typos.
+* Clean data stage now includes a filter which removes the data for leagues the user isn't interested in.
+* Added some date helpers for what I expect are common options - today, yesterday or custom.
+
+# Required Python Packages
+
+* pip install requests
+* pip install BeautifulSoup
+* pip install fuzzywuzzy
+
+# Overall Aim
+
+* Build A Scraper That Gets All Of Yesterdays Games.
+* From that list, select a specific game.
