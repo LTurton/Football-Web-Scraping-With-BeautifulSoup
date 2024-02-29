@@ -10,6 +10,10 @@ class DateHelpers:
     @staticmethod
     def get_yesterdays_date():
         return (datetime.today() - timedelta(days = 1)).strftime('%Y-%m-%d')
+    
+    @staticmethod
+    def get_tomorrows_date():
+        return (datetime.today() + timedelta(days = 1)).strftime('%Y-%m-%d')
 
     @staticmethod
     def request_custom_date():
