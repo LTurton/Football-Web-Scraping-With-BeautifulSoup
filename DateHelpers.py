@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 
 class DateHelpers:
     
@@ -8,7 +9,7 @@ class DateHelpers:
     
     @staticmethod
     def get_yesterdays_date():
-        return datetime.yesterday().strftime('%Y-%m-%d')
+        return (datetime.today() - timedelta(days = 1)).strftime('%Y-%m-%d')
 
     @staticmethod
     def request_custom_date():
