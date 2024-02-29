@@ -57,10 +57,12 @@ class LeaguesHandler:
             'Turkish Super Lig',
             'Under-21 Friendly',
             'United States Major League Soccer',
+            "UEFA Women's Nations League"
             'Welsh Cup',
             'Welsh League Cup',
             "Women's Champions League",
             "Africa Cup of Nations",
+            "Women's International Friendlies",
             "World Cup Qualifying - North/Central America",
             "World Cup Qualifying - Asia",
             "World Cup Qualifying - South America"]
