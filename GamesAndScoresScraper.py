@@ -1,6 +1,7 @@
 #Third Party Includes:
 import requests
 from bs4 import BeautifulSoup
+from termcolor import colored
 
 from leagues import LeaguesHandler
 
@@ -37,21 +38,26 @@ class GamesAndScoresScraper:
     # Helper Function - Cleaning (Remove Data From Leagues I Want To Ignore):
     @staticmethod
     def remove_unwanted_leagues(data, leagues_of_interest = LeaguesHandler.interesting_leagues()):
+        all_leagues = LeaguesHandler.all_leagues()
         cleaned_data = []
-        skip = True  # Flag to skip elements initially
+        keep = False  
+        
+        #Handle Single String Inputs:
+        if isinstance(leagues_of_interest, str):
+            leagues_of_interest = [leagues_of_interest]        
 
         for element in data:
             if element in leagues_of_interest:
-                # Found a "useful" element, reset the skip flag
-                skip = False
-                cleaned_data.append(element)
-            elif not skip:
-                # If not skipping, add the element to cleaned_data
+                keep = True
+            elif element in all_leagues and element not in leagues_of_interest:
+                keep = False
+
+            if keep or element in leagues_of_interest:
                 cleaned_data.append(element)
 
         if not cleaned_data:
-            print("No Data found for the requested league, check your inputs.")
-            
+                print("No Data found for the requested league, check your inputs.")
+
         return cleaned_data
     
     @staticmethod
@@ -89,7 +95,7 @@ class GamesAndScoresScraper:
 
         #only want to print a "vs" after the first team then stop it for the second, so use this to toggle.        
         while i < len(data):
-            if data[i] in LeaguesHandler.interesting_leagues():
+            if data[i] in LeaguesHandler.all_leagues():
                 print()
                 print(colored(data[i].upper(), 'blue'))
                 print()
